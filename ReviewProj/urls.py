@@ -23,6 +23,7 @@ urlpatterns = [
     path('',mainapp.views.index, name="index"),
     path('read/<int:post_id>', mainapp.views.read, name='read'),
     path('create/', mainapp.views.create, name="create"),
+    path('c_create/<int:post_id>', mainapp.views.c_create, name="c_create"),
     path('update/<int:post_id>', mainapp.views.update, name="update"),
     path('delete/<int:post_id>',mainapp.views.delete,name='delete'),
     path('signup/', accounts.views.signup, name='signup'),

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Blog
+from .models import Blog, Comment
 # Create your views here.
 
 
@@ -13,8 +13,10 @@ def index(request):
 
 def read(request, post_id):
     post = Blog.objects.get(id=post_id)
+    comment = Comment.objects.filter(post=post.id)
     context = {
-        "post": post
+        "post": post,
+        "comment": comment,
     }
 
     return render(request, 'read.html', context)
@@ -26,11 +28,13 @@ def create(request):
 
     elif request.method == "POST":
         post = Blog()
+        post.user = request.user
         post.title = request.POST['title']
         post.content = request.POST['content']
         post.save()
 
         return redirect(index)
+
 
 def update(request, post_id):
     if request.method == "GET":
@@ -47,7 +51,18 @@ def update(request, post_id):
         post.save()
         return redirect(index)
 
-def delete(request,post_id):
-    post = Blog.objects.get(id = post_id)
+
+def delete(request, post_id):
+    post = Blog.objects.get(id=post_id)
     post.delete()
     return redirect(index)
+
+
+def c_create(request, post_id):  # comment create : 댓글 생성&저장 함수
+    if request.method == "POST":
+        comment = Comment()
+        comment.user = request.user  # request.user 는 현재 접속한 유저의 정보
+        comment.post = Blog.objects.get(id=post_id)  # post_id 는 댓글을 단 post의 id(인증키)
+        comment.content = request.POST['comment']  # 'comment'는 text input의 name
+        comment.save()
+        return redirect(read, comment.post.id)

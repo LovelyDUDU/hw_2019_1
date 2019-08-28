@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 index화면
 
 {% if user.is_authenticated %}
@@ -14,7 +15,10 @@ index화면
 
 <hr>
 <hr>
+{% if user.is_authenticated %}
 <a href="{%url 'create' %}"><button>글쓰기</button></a>
+{% else %}
+{%endif%}
 {% for p in posts %}
     <a href="{% url 'read' p.id %}"><p>글 제목 : {{p.title}}</p></a>
     <p>글 내용 : {{p.content}}</p>
