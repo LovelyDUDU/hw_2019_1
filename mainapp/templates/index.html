@@ -1,0 +1,23 @@
+index화면
+
+{% if user.is_authenticated %}
+<p>환영합니다 {{user.username}}님</p>
+<form action="{%url 'logout'%}" method="POST">
+    {%csrf_token%}
+    <input type="submit" value="로그아웃">
+</form>
+{% else %}
+<p>로그인 해주세요</p>
+<a href="{%url 'signup'%}">회원가입</a>
+<a href="{%url 'login'%}">로그인</a>
+{% endif %}
+
+<hr>
+<hr>
+<a href="{%url 'create' %}"><button>글쓰기</button></a>
+{% for p in posts %}
+    <a href="{% url 'read' p.id %}"><p>글 제목 : {{p.title}}</p></a>
+    <p>글 내용 : {{p.content}}</p>
+    <p>글 작성시간 : {{p.created_at}}</p>
+    <hr>
+{%endfor%}
